@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <title>Work 3 AngularJS</title>
+    <style>
+        @keyframes fade-in {
+            from { opacity: 0; top: 200px;}
+            to { opacity: 1; top: 0px;}
+        }
+        @keyframes flip-in {
+            from { width: 0px;}
+            to { width: 75px;}
+        }
+        .card-body div{
+            animation: 2s fade-in;
+            position: relative;
+        }
+        div.pic img {
+            width: 75px;
+            height: 75px;
+            animation: 0.5s flip-in;
+        }
+
+        div.pic {
+            height: 100px;
+        }
+        
+        .card-header{
+            background-color: rgb(0, 0, 0);
+            color: white;
+        }
+        .card-footer{
+            background-color: rgb(0, 0, 0);
+            color: white;
+        }
+    </style>
+</head>
+
+<body ng-app="app" ng-controller="game">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">{{title}}</div>
+            <div class="card-body text-center">
+                <div ng-show="state==0" >
+                    <div id="view0" style='text-align:center;'>
+                        <img src="work1/logo.png" class="card-img-top" style="width:80%; height:50%;">
+                    </div>
+                    <br>
+                    <button class="btn btn-success" ng-click="startgame()">Let's go!</button>
+                    <a href="index.html" class="btn btn-danger">Back to homepage</a>
+                </div>
+                <div ng-show="state==1">
+                    <div class="row">
+                        <div class="col-2 pic" ng-repeat="c in cards">
+                            <img ng-if="c.s==0" src="work1/0.png" width="150" height="150" ng-click="imgclick(c)">
+                            <img ng-if="c.s==1" ng-src="work1/{{c.t}}.png" width="150" height="150">
+
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" ng-click="state=0">Exit the game</button>
+                </div>
+                <div ng-show="state==2">
+                    <h1>Congratulations you win!</h1>
+                    <button class="btn btn-primary" ng-click="state=0">Play again</button>
+                </div>
+            </div>
+            <div class="card-footer">{{footer}}</div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script>
+        var app = angular.module("app", []);
+        app.controller("game", function ($scope, $timeout) {
+            $scope.title = "Work 3 : Matching Game with AngularJS";
+            $scope.footer = "Ittipat Lusuk College of Computing";
+            $scope.state = 0;
+            
+            $scope.startgame = function () {
+                $scope.state = 1;
+                $scope.cards = [];
+                $scope.cards_opened = [];
+                $scope.cards_count = 36;
+                for (var i = 1; i <= 18; i++) {
+                    $scope.cards.push({ t: i, s: 0 }); // T เป็นเลขรูปภาพตาม i , s เป็น สถานะของภาพ
+                    $scope.cards.push({ t: i, s: 0 });
+                }
+                for (var i = 1; i < 100; i++) {
+                    var a = Math.round(Math.random() * 35);
+                    var b = Math.round(Math.random() * 35);
+                    var t = this.cards[a];
+                    $scope.cards[a] = this.cards[b];
+                    $scope.cards[b] = t;
+                }
+            }
+            
+            $scope.imgclick = function (c) {
+                if ($scope.cards_opened.length < 2) {
+                    c.s = 1;
+                    $scope.cards_opened.push(c);
+                    // เมื่อเปิด card ครบ 2 ใบ ให้ตั้งเวลาเพื่อเรียก checkCard 
+                    if ($scope.cards_opened.length == 2) {
+                        $timeout($scope.checkCard, 1000);
+                    }
+                }
+            }
+
+            $scope.checkCard = function (c) {
+                // ให้  a และ b card ทั้ง 2 ใบที่เปิดอยู่
+                var a = $scope.cards_opened[0];
+                var b = $scope.cards_opened[1];
+                $scope.cards_opened = [];
+                if (a.t == b.t) {  // รูปตรงกัน
+                    a.s = 2;      // s=2 หมายถึงลบภาพออก
+                    b.s = 2;
+                    $scope.cards_count -= 2;
+                } else {
+                    a.s = 0;    // s=0 หมายถึง ปิดภาพ
+                    b.s = 0;
+                }
+                if ($scope.cards_count == 0) {  // ไม่เหลือ card บนจอ
+                    $scope.state = 2;          // เปลี่ยน state เป็น 2 เพื่อแสดงหน้า ชนะ
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

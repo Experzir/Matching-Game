@@ -1,7 +1,7 @@
 # Matching-Game
 Matching Game with JQuery &amp; Bootstarp, VueJS &amp; VuetifyJS, AngularJS, ReactJS
 
-### Matching-Game
+### Framework 
 - JQuery &amp; Bootstarp
 - VueJS &amp; VuetifyJS
 - AngularJS

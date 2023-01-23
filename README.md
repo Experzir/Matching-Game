@@ -9,6 +9,7 @@ Matching Game with JQuery &amp; Bootstarp, VueJS &amp; VuetifyJS, AngularJS, Rea
 
 ### Demo build with ReactJS
 - If you select 2 identical pictures, they disappear and if all of them disappear, you win.
+- 
 ![r1](https://user-images.githubusercontent.com/71135805/214021366-21f47dbf-47e5-4d44-820e-f297495e9f07.png)
 ![r2](https://user-images.githubusercontent.com/71135805/214021378-fdeb88c8-b94a-45c9-bdcf-5fdaa7212921.png)
 ![r3](https://user-images.githubusercontent.com/71135805/214021394-17b39239-c477-4f3e-8f0f-1865b2c6e789.png)
